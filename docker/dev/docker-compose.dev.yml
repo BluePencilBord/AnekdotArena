@@ -1,0 +1,57 @@
+name: StartsJokes
+
+services:
+  bot:
+    build:
+      context: ../..
+      dockerfile: docker/dev/dockerfile.dev
+    image: bot-image
+    container_name: bot-container
+    volumes:
+      - ../../bot:/bot
+    env_file:
+      - ../../bot/.env
+    depends_on:
+      - postgres
+    command: sh -c "python main.py"
+
+  postgres:
+    image: postgres:alpine
+    container_name: postgres-container
+    env_file:
+      - ../../bot/.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: redis-container
+    volumes:
+      - redis_data:/data
+
+  gitlab:
+    image: gitlab/gitlab-ce:17.10.7-ce.0
+    container_name: gitlab
+    restart: always
+    hostname: "gitlab.university.com"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.university.com'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "22:22"
+    volumes:
+      - "gitlab_config:/etc/gitlab"
+      - "gitlab_logs:/var/log/gitlab"
+      - "gitlab_data:/var/opt/gitlab"
+    shm_size: "256m"
+
+volumes:
+  postgres_data:
+  redis_data:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:
