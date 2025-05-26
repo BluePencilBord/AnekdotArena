@@ -4,6 +4,10 @@ stages:
 build_bot_image:
   stage: build
 
+  tags:
+    - docker
+    - python
+
   image: docker:latest
 
   services:
