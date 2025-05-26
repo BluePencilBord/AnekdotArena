@@ -52,7 +52,7 @@ services:
     shm_size: "256m"
 
   gitlab-runner:
-    image: gitlab/gitlab-runner:alpine3.19-2147fb44
+    image: gitlab/gitlab-runner:alpine3.21-v17.11.2
     container_name: gitlab-runner
     restart: always
     volumes:
