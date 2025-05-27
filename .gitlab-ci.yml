@@ -14,6 +14,6 @@ build_bot_image:
     - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
 
   script:
-    - docker build -f docker/dev/dockerfile.dev -t kirillbad/bot-image:latest .
+    - docker build -f docker/dockerfile -t kirillbad/anekdotarena:latest .
 
-    - docker push kirillbad/bot-image:latest
+    - docker push kirillbad/anekdotarena:latest
