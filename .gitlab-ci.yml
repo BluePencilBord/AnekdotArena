@@ -29,18 +29,12 @@ deploy_to_stage:
     - apk add --no-cache openssh-client bash
     - eval $(ssh-agent -s)
     - ssh-add "$SSH_PRIVATE_KEY_STAGE"
+    - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
     - ssh-keyscan -H "stage" >> ~/.ssh/known_hosts
+    - scp "docker/production/docker-compose.yml" "kirillbad@stage:anekdotarena/docker-compose.stage.yml"
   script:
     - ssh "$STAGE_SERVER_USER_HOSTNAME" "
       set -e; \
-      docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD; \
-      cd ${STAGE_PROJECT_PATH:-/opt/anekdotarena-stage/}; \
-      echo 'Pulling latest image for bot service...'; \
-      docker-compose -f docker-compose.stage.yml pull bot; \
-      echo 'Stopping and recreating bot service...'; \
-      docker-compose -f docker-compose.stage.yml up -d --force-recreate bot; \
-      echo 'Cleaning up unused Docker images on stage...'; \
-      docker image prune -af; \
-      docker logout"
+      docker compose up -d; \
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "main"'
