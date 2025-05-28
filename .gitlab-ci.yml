@@ -26,22 +26,19 @@ deploy_to_stage:
     - python
   image: alpine:latest
   before_script:
-    - apk add --no-cache openssh-client bash scp; echo "apk RC: $?"
-    - eval $(ssh-agent -s); echo "ssh-agent RC: $?"
-    - chmod 600 "$SSH_PRIVATE_KEY_STAGE"; echo "chmod key RC: $?"
-    - ssh-add "$SSH_PRIVATE_KEY_STAGE"; echo "ssh-add RC: $?"
-    - mkdir -p ~/.ssh; echo "mkdir .ssh RC: $?"
-    - chmod 700 ~/.ssh; echo "chmod .ssh RC: $?"
-    - echo "Attempting ssh-keyscan for 100.67.76.27..."
-    - ssh-keyscan -H "100.67.76.27" >> ~/.ssh/known_hosts; KEYS_RC=$?; echo "ssh-keyscan RC: $KEYS_RC" # Сохраняем код возврата
-    - if [ $KEYS_RC -ne 0 ]; then echo "ssh-keyscan failed!"; exit 1; fi
-    - echo "Checking known_hosts file..."
-    - ls -la ~/.ssh/known_hosts; echo "ls known_hosts RC: $?"
-    - echo "Contents of known_hosts:"
-    - cat ~/.ssh/known_hosts; echo "cat known_hosts RC: $?"
-    - chmod 644 ~/.ssh/known_hosts; echo "chmod known_hosts RC: $?"
-    - echo "Attempting scp..."
-    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.yml"; echo "scp RC: $?"
+    - apk add --no-cache openssh-client bash
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
+    - ssh-add "$SSH_PRIVATE_KEY_STAGE"
+    - mkdir -p ~/.ssh
+    - echo "Pinging 100.67.76.27 (ICMP might be blocked, but let's try)"
+    - ping -c 3 100.67.76.27 || echo "Ping failed"
+    - echo "Attempting TCP connection to 100.67.76.27 port 22 with netcat..."
+    - nc -zv -w 3 100.67.76.27 22
+    - ssh-keyscan -H "100.67.76.27" >> ~/.ssh/known_hosts
+    - ls -la ~/.ssh/known_hosts
+    - cat ~/.ssh/known_hosts
+    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.yml"
   script:
     - ssh "kirillbad@100.67.76.27" "
       set -e; \
