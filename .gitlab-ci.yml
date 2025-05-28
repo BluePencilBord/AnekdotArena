@@ -31,11 +31,9 @@ deploy_to_stage:
     - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
     - ssh-add "$SSH_PRIVATE_KEY_STAGE"
     - mkdir -p ~/.ssh
-    - ssh-keyscan -H "stage" >> ~/.ssh/known_hosts
-    - scp "docker/production/docker-compose.yml" "kirillbad@stage:anekdotarena/docker-compose.stage.yml"
+    - ssh-keyscan -H "100.67.76.27" >> ~/.ssh/known_hosts
+    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.stage.yml"
   script:
-    - ssh "$STAGE_SERVER_USER_HOSTNAME" "
+    - ssh "kirillbad@100.67.76.27" "
       set -e; \
-      docker compose up -d; \
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "main"'
+      docker compose up -d; "
