@@ -28,8 +28,8 @@ deploy_to_stage:
   before_script:
     - apk add --no-cache openssh-client bash
     - eval $(ssh-agent -s)
-    - ssh-add "$SSH_PRIVATE_KEY_STAGE"
     - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
+    - ssh-add "$SSH_PRIVATE_KEY_STAGE"
     - ssh-keyscan -H "stage" >> ~/.ssh/known_hosts
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:anekdotarena/docker-compose.stage.yml"
   script:
