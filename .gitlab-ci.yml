@@ -26,6 +26,7 @@ deploy_to_stage:
     - python
   image: alpine:latest
   before_script:
+    - apk add --no-cache curl
     - TS_VERSION=$(curl -sSL https://pkgs.tailscale.com/stable/?mode=list | grep -E '^alpine-[0-9]+-static' | tail -n1)
     - curl -sSL "https://pkgs.tailscale.com/stable/${TS_VERSION}.tgz" | tar xzfv - --strip-components=1
     - "./tailscaled --state=mem: --socket=/tmp/tailscaled.sock --tun=userspace-networking &"
