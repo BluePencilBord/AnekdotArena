@@ -26,6 +26,11 @@ deploy_to_stage:
     - python
   image: alpine:latest
   before_script:
+    - TS_VERSION=$(curl -sSL https://pkgs.tailscale.com/stable/?mode=list | grep -E '^alpine-[0-9]+-static' | tail -n1)
+    - curl -sSL "https://pkgs.tailscale.com/stable/${TS_VERSION}.tgz" | tar xzfv - --strip-components=1
+    - "./tailscaled --state=mem: --socket=/tmp/tailscaled.sock --tun=userspace-networking &"
+    - ./tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes
+    - ping stage
     - apk add --no-cache openssh-client bash
     - eval $(ssh-agent -s)
     - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
