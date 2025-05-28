@@ -34,7 +34,6 @@ deploy_to_stage:
     - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
     - ssh-add "$SSH_PRIVATE_KEY_STAGE"
     - mkdir -p ~/.ssh
-    - echo "Pinging 100.67.76.27 (ICMP might be blocked, but let's try)"
     - ping -c 3 100.67.76.27 || echo "Ping failed"
     - echo "Attempting TCP connection to 100.67.76.27 port 22 with netcat..."
     - nc -zv -w 3 100.67.76.27 22
