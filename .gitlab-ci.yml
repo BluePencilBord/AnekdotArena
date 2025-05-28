@@ -32,7 +32,9 @@ deploy_to_stage:
     - ssh-add "$SSH_PRIVATE_KEY_STAGE"
     - mkdir -p ~/.ssh
     - ssh-keyscan -H "100.67.76.27" >> ~/.ssh/known_hosts
-    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.stage.yml"
+    - ls -la ~/.ssh/known_hosts
+    - cat ~/.ssh/known_hosts
+    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.yml"
   script:
     - ssh "kirillbad@100.67.76.27" "
       set -e; \
