@@ -24,10 +24,8 @@ deploy_to_stage:
   tags:
     - docker
     - python
-  image: tailscale/tailscale:stable
+  image: alpine:latest
   before_script:
-    - tailscaled --state="mem:" &
-    - tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes
     - ping stage
     - apk add --no-cache openssh-client bash
     - eval $(ssh-agent -s)
