@@ -27,7 +27,7 @@ deploy_to_stage:
   image: tailscale/tailscale:stable
   before_script:
     - tailscaled --state="mem:" &
-    - tailscale up --authkey="${TAILSCALE_AUTH_KEY}?ephemeral=true" --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes
+    - tailscale up --authkey=${TAILSCALE_AUTH_KEY}?ephemeral=true --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes
     - ping stage
     - apk add --no-cache openssh-client bash
     - eval $(ssh-agent -s)
