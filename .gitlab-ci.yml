@@ -34,4 +34,4 @@ deploy_to_stage:
     - ssh-keyscan -H stage >> ~/.ssh/known_hosts
   script:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
-    - ssh kirillbad@stage '/snap/bin/docker info'
+    - ssh kirillbad@stage 'bash -l -c "/usr/bin/docker info"'
