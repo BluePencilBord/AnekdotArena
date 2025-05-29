@@ -27,19 +27,8 @@ deploy_to_stage:
   image: alpine:latest
   before_script:
     - ping stage
-    - apk add --no-cache openssh-client bash
-    - eval $(ssh-agent -s)
-    - chmod 600 "$SSH_PRIVATE_KEY_STAGE"
-    - ssh-add "$SSH_PRIVATE_KEY_STAGE"
-    - mkdir -p ~/.ssh
-    - ping -c 3 100.67.76.27 || echo "Ping failed"
-    - echo "Attempting TCP connection to 100.67.76.27 port 22 with netcat..."
-    - nc -zv -w 3 100.67.76.27 22
-    - ssh-keyscan -H "100.67.76.27" >> ~/.ssh/known_hosts
-    - ls -la ~/.ssh/known_hosts
-    - cat ~/.ssh/known_hosts
-    - scp "docker/production/docker-compose.yml" "kirillbad@100.67.76.27:docker-compose.yml"
+    - scp docker/production/docker-compose.yml kirillbad@stage:/
   script:
-    - ssh "kirillbad@100.67.76.27" "
-      set -e; \
+    - ssh kirillbad@stage
+      " set -e; \
       docker compose up -d; "
