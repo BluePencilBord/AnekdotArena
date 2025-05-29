@@ -27,7 +27,8 @@ deploy_to_stage:
   image: alpine:latest
   before_script:
     - apk add --no-cache openssh
-    - scp docker/production/docker-compose.yml kirillbad@stage:/
+    - ssh kirillbad@stage
+    # - scp docker/production/docker-compose.yml kirillbad@stage:/
   script:
     - ssh kirillbad@stage
       " set -e; \
