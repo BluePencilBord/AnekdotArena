@@ -28,8 +28,8 @@ deploy_to_stage:
   before_script:
     - tailscaled --state="mem:" --socket=/tmp/tailscaled.sock --tun=userspace-networking &
     - sleep 3
-    - ./tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes --socket=/tmp/tailscaled.sock
-    - ./tailscale status
+    - tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes --socket=/tmp/tailscaled.sock
+    - tailscale status
   script:
     - ssh kirillbad@stage
       " set -e; \
