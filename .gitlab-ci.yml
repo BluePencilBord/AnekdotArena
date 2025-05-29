@@ -32,10 +32,11 @@ bandit:
   stage: security
   image:
     name: "ghcr.io/pycqa/bandit/bandit"
+    entrypoint: [""]
   tags:
     - python
   script:
-    - bandit -r ./ -lll -f json -o bandit-sast-report.json
+    - bandit -r ./ -f json -o bandit-results.json
   artifacts:
     paths:
       - bandit-sast-report.json
