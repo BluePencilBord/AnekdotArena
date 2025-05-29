@@ -15,9 +15,7 @@ class BaseDatabaseMiddleware(BaseMiddleware):
             self.set_session(data, session)
             try:
                 result = await handler(event, data)
-                await self.after_handler(
-                    session
-                )
+                await self.after_handler(session)
                 return result
             except Exception as e:
                 await session.rollback()

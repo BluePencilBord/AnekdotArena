@@ -17,7 +17,13 @@ from anecdotes.kbs import (
     PaginationCallbackFactory,
     reported_anecdote_kb,
 )
-from anecdotes.schemas import RateModel, RateModelUserId, AnecdoteFilter, AnecdoteUpdate, AnecdoteModel
+from anecdotes.schemas import (
+    RateModel,
+    RateModelUserId,
+    AnecdoteFilter,
+    AnecdoteUpdate,
+    AnecdoteModel,
+)
 from payments.dao import DonationDAO
 
 anecdote_router = Router()
@@ -102,7 +108,6 @@ async def process_rate(
     session_with_commit: AsyncSession,
     session_without_commit: AsyncSession,
 ):
-
     data = await state.get_data()
     anecdote_id = data.get("anecdote_id")
     user_id = data.get("user_id")
