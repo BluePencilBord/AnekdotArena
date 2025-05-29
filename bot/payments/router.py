@@ -100,7 +100,7 @@ async def process_send_gift_add_text(
 
 
 @payments_router.callback_query(F.data == "back", RateStates.selecting_gift)
-async def handle_back(callback: CallbackQuery, state: FSMContext):
+async def handle_back_from_selecting_gift(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     previous_state = data.get("previous_state")
     if previous_state == RateStates.watching_top_anecdotes:
@@ -116,7 +116,7 @@ async def handle_back(callback: CallbackQuery, state: FSMContext):
 
 
 @payments_router.callback_query(F.data == "back", RateStates.writing_gift_text)
-async def handle_back(callback: CallbackQuery, state: FSMContext):
+async def handle_back_from_writing_text(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     await state.set_state(RateStates.selecting_gift)
