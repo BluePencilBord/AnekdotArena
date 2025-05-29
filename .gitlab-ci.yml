@@ -1,6 +1,5 @@
 stages:
   - lint
-  - security
   - build
   - deploy
 
@@ -18,7 +17,7 @@ stages:
 Ruff Check:
   extends: .base_ruff
   script:
-    - ruff check --output-format=gitlab > code-quality-report.json
+    - ruff check --config "lint.select=['E', 'F', 'S']" --output-format=gitlab > code-quality-report.json
   artifacts:
     reports:
       codequality: $CI_PROJECT_DIR/code-quality-report.json
@@ -27,19 +26,6 @@ Ruff Format:
   extends: .base_ruff
   script:
     - ruff format --diff
-
-bandit:
-  stage: security
-  image:
-    name: "ghcr.io/pycqa/bandit/bandit"
-    entrypoint: [""]
-  tags:
-    - python
-  script:
-    - bandit -r ./ -f json -o bandit-results.json
-  artifacts:
-    paths:
-      - bandit-sast-report.json
 
 build_bot_image:
   stage: build
