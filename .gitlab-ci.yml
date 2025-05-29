@@ -1,5 +1,6 @@
 stages:
   - lint
+  - security
   - build
   - deploy
 
@@ -26,6 +27,18 @@ Ruff Format:
   extends: .base_ruff
   script:
     - ruff format --diff
+
+bandit:
+  stage: security
+  image:
+    name: "ghcr.io/pycqa/bandit/bandit"
+  tags:
+    - python
+  script:
+    - bandit -r ./ -lll -f json -o bandit-sast-report.json
+  artifacts:
+    paths:
+      - bandit-sast-report.json
 
 build_bot_image:
   stage: build
