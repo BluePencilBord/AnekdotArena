@@ -28,7 +28,7 @@ deploy_to_stage:
   before_script:
     - tailscaled --state="mem:" --socket=/tmp/tailscaled.sock --tun=userspace-networking &
     - sleep 3
-    - tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes --socket=/tmp/tailscaled.sock
+    - tailscale up --auth-key=${TAILSCALE_AUTHKEY} --hostname="gitlab-$(cat /etc/hostname)" --accept-routes
     - tailscale status
   script:
     - ssh kirillbad@stage
