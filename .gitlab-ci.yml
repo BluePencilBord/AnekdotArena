@@ -34,6 +34,6 @@ deploy_to_stage:
     - ssh-keyscan -H stage >> ~/.ssh/known_hosts
   script:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
-    - ssh -t kirillbad@stage "
+    - ssh kirillbad@stage "
       set -e; \
       docker compose up -d"
