@@ -24,11 +24,12 @@ deploy_to_stage:
   tags:
     - docker
     - python
-  image: alpine:latest
+  image: tailscale/tailscale:stable
   before_script:
-    - apk add --no-cache openssh
-    - ssh kirillbad@stage
-    # - scp docker/production/docker-compose.yml kirillbad@stage:/
+    - tailscaled --state="mem:" --socket=/tmp/tailscaled.sock --tun=userspace-networking &
+    - sleep 3
+    - ./tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname=${CI_JOB_ID}-${CI_COMMIT_SHORT_SHA} --accept-routes --socket=/tmp/tailscaled.sock
+    - ./tailscale status
   script:
     - ssh kirillbad@stage
       " set -e; \
