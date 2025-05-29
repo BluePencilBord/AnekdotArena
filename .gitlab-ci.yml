@@ -33,6 +33,6 @@ deploy_to_stage:
     - chmod 700 ~/.ssh
     - ssh-keyscan -H stage >> ~/.ssh/known_hosts
   script:
-    - scp "docker/production/docker-compose.yml" "kirillbad@stage:/docker-compose.yml"
+    - scp "docker/production/docker-compose.yml" "kirillbad@stage:/"
     - ssh kirillbad@stage
     - docker compose up -d
