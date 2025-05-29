@@ -227,7 +227,7 @@ async def process_donate_to_prize_fund(message: Message, state: FSMContext):
         )
 
     await message.reply_invoice(
-        title=f"Пополнение призового фонда",
+        title="Пополнение призового фонда",
         description=f"Пожертвование в призовой фонд на сумму {validated_amount.amount} ⭐️",
         payload="donate_to_prize_fund",
         provider_token="",
