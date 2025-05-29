@@ -36,4 +36,5 @@ deploy_to_stage:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
     - ssh kirillbad@stage "
       set -e; \
-      /usr/bin/docker compose up -d"
+      export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$PATH\"; \
+      docker compose up -d"
