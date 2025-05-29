@@ -36,5 +36,4 @@ deploy_to_stage:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
     - ssh kirillbad@stage "
       set -e; \
-      docker compose up -d
-      "
+      /usr/bin/docker compose up -d"
