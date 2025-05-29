@@ -27,7 +27,7 @@ async def get_start_text(message: Message, session: AsyncSession) -> tuple[str, 
 
     rates = await RateDAO.count(session, filters=RateModelUserId(user_id=user_info.id))
 
-    text = f"⚔️ Добро пожаловать на <b>Анекдот Арену</b> 🛡️\n\n🎁 Пиши шутки и зарабатывай ⭐\n\n💰 Призовой фонд: <b>{total_donation}</b> ⭐️\n\n📝 Оценено анекдотов: <b>{rates}</b> 🔎"
+    text = f"⚔️ Добро пожаловать на <b>Анекдот Арену</b> 🛡️\n\n🎁 Пиши шутки и зарабатывай ⭐\n\n💰 Призовой фонд: <b>{total_donation}</b> ⭐️\n\n📝 Оценил анекдотов: <b>{rates}</b> 🔎"
     kb = main_user_kb(message.from_user.id)
 
     return text, kb

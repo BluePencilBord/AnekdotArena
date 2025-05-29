@@ -4,20 +4,19 @@ stages:
 
 build_bot_image:
   stage: build
-
   tags:
     - docker
     - python
 
   image: docker:latest
-
   before_script:
     - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-
   script:
     - docker build -f docker/production/dockerfile -t kirillbad/anekdotarena:latest .
 
     - docker push kirillbad/anekdotarena:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\// || $CI_COMMIT_BRANCH == "develop"'
 
 deploy_to_stage:
   stage: deploy
@@ -35,3 +34,5 @@ deploy_to_stage:
   script:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
     - ssh kirillbad@stage 'bash -c "docker compose up -d"'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
