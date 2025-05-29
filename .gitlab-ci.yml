@@ -26,7 +26,6 @@ deploy_to_stage:
     - python
   image: alpine:latest
   before_script:
-    - ping stage
     - scp docker/production/docker-compose.yml kirillbad@stage:/
   script:
     - ssh kirillbad@stage
