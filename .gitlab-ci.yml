@@ -26,7 +26,7 @@ deploy_to_stage:
     - python
   image: tailscale/tailscale:stable
   before_script:
-    - tailscaled --state="mem:" --socket=/tmp/tailscaled.sock --tun=userspace-networking &
+    - tailscaled --state="mem:" &
     - sleep 3
     - tailscale up --auth-key=${TAILSCALE_AUTHKEY} --hostname="gitlab-$(cat /etc/hostname)" --accept-routes
     - tailscale status
