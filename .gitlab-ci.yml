@@ -26,10 +26,9 @@ deploy_to_stage:
     - python
   image: tailscale/tailscale:stable
   before_script:
+    - apk add --no-cache openssh-client
     - tailscaled --state="mem:" &
-    - sleep 3
     - tailscale up --auth-key=${TAILSCALE_AUTHKEY} --hostname="gitlab-$(cat /etc/hostname)" --accept-routes
-    - tailscale status
   script:
     - ssh kirillbad@stage
       " set -e; \
