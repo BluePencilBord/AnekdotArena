@@ -27,7 +27,7 @@ def rate_anecdote_kb() -> InlineKeyboardMarkup:
     kb.button(text="2️⃣", callback_data=RateCallbackFactory(action="rate", value=2))
     kb.button(text="3️⃣", callback_data=RateCallbackFactory(action="rate", value=3))
     kb.button(text="4️⃣", callback_data=RateCallbackFactory(action="rate", value=4))
-    kb.button(text="5️⃣", callback_data=RateCallbackFactory(action="rate", value=5)),
+    (kb.button(text="5️⃣", callback_data=RateCallbackFactory(action="rate", value=5)),)
     kb.button(text="Отправить подарок автору 🎁", callback_data="select_gift")
     kb.button(text="↩️ Назад", callback_data="start")
     kb.button(text="🚨 Пожаловаться", callback_data="report_anecdote")

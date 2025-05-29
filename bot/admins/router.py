@@ -24,7 +24,7 @@ async def show_admin_panel(callback: CallbackQuery):
 
 
 @admin_router.callback_query(F.data == "show_reports")
-async def show_admin_panel(
+async def show_admin_reports(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
 ):
     await callback.answer()

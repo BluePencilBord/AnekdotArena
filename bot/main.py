@@ -6,7 +6,7 @@ from users.router import user_router
 from anecdotes.router import anecdote_router
 from payments.router import payments_router
 from admins.router import admin_router
-from database.models import *
+from database.models import *  # noqa
 from database.dao.databae_middleware import (
     DatabaseMiddlewareWithoutCommit,
     DatabaseMiddlewareWithCommit,

@@ -9,7 +9,12 @@ from aiogram.methods import SendGift
 from users.dao import UserDAO
 from users.schemas import UserIDModel, TelegramIDModel
 from config_reader import bot
-from payments.schemas import GiftTextModel, GiftModel, DonationAmountModel, DonationModel
+from payments.schemas import (
+    GiftTextModel,
+    GiftModel,
+    DonationAmountModel,
+    DonationModel,
+)
 from pydantic import ValidationError
 from payments.dao import GiftDAO, DonationDAO
 from aiogram.filters.command import Command
@@ -54,7 +59,7 @@ async def process_send_gift(
 
 @payments_router.message(F.text, RateStates.writing_gift_text)
 @payments_router.callback_query(F.data == "skip_text", RateStates.writing_gift_text)
-async def process_send_gift(
+async def process_send_gift_add_text(
     event: Message | CallbackQuery,
     state: FSMContext,
 ):
@@ -95,7 +100,7 @@ async def process_send_gift(
 
 
 @payments_router.callback_query(F.data == "back", RateStates.selecting_gift)
-async def handle_back(callback: CallbackQuery, state: FSMContext):
+async def handle_back_from_selecting_gift(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     previous_state = data.get("previous_state")
     if previous_state == RateStates.watching_top_anecdotes:
@@ -111,7 +116,7 @@ async def handle_back(callback: CallbackQuery, state: FSMContext):
 
 
 @payments_router.callback_query(F.data == "back", RateStates.writing_gift_text)
-async def handle_back(callback: CallbackQuery, state: FSMContext):
+async def handle_back_from_writing_text(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     await state.set_state(RateStates.selecting_gift)
@@ -148,7 +153,7 @@ async def pre_checkout_donation_handler(
 
 
 @payments_router.message(F.successful_payment, RateStates.writing_gift_text)
-async def on_successful_payment(
+async def on_successful_gift_payment(
     message: Message,
     state: FSMContext,
     session_without_commit: AsyncSession,
@@ -222,12 +227,12 @@ async def process_donate_to_prize_fund(message: Message, state: FSMContext):
         validated_amount = DonationAmountModel(amount=message.text)
     except Exception:
         await message.answer(
-            "❌ Пожалуйста, введите целое число\n\n" "✏️ Например: 100",
+            "❌ Пожалуйста, введите целое число\n\n✏️ Например: 100",
             reply_markup=back_to_start_kb(),
         )
 
     await message.reply_invoice(
-        title=f"Пополнение призового фонда",
+        title="Пополнение призового фонда",
         description=f"Пожертвование в призовой фонд на сумму {validated_amount.amount} ⭐️",
         payload="donate_to_prize_fund",
         provider_token="",
@@ -237,7 +242,7 @@ async def process_donate_to_prize_fund(message: Message, state: FSMContext):
 
 
 @payments_router.message(F.successful_payment, UserStates.donating_to_prize_fund)
-async def on_successful_payment(
+async def on_successful_donate_payment(
     message: Message,
     state: FSMContext,
     session_without_commit: AsyncSession,

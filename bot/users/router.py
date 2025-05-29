@@ -8,7 +8,11 @@ from anecdotes.dao import AnecdoteDAO
 from users.schemas import TelegramIDModel
 from users.dao import UserDAO
 from users.states import UserStates
-from anecdotes.kbs import PaginationCallbackFactory, back_to_start_kb, pagination_anecdotes_kb
+from anecdotes.kbs import (
+    PaginationCallbackFactory,
+    back_to_start_kb,
+    pagination_anecdotes_kb,
+)
 from anecdotes.schemas import AnecdoteUserIdFilter
 from config_reader import config
 from aiogram.filters.command import Command
