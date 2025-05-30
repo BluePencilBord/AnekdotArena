@@ -6,6 +6,7 @@ from users.router import user_router
 from anecdotes.router import anecdote_router
 from payments.router import payments_router
 from admins.router import admin_router
+from metrics import start_metrics_server
 from database.models import *  # noqa
 from database.dao.databae_middleware import (
     DatabaseMiddlewareWithoutCommit,
@@ -32,6 +33,8 @@ async def main():
     dp.include_router(anecdote_router)
     dp.include_router(payments_router)
     dp.include_router(admin_router)
+
+    start_metrics_server(port=8000)
 
     await dp.start_polling(bot)
 
