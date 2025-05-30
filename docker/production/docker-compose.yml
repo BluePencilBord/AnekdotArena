@@ -6,12 +6,49 @@ services:
     container_name: bot-container
     env_file:
       - .env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - postgres
       - redis
     command: sh -c "python main.py"
+
+  prometheus:
+    image: prom/prometheus:v3.4.0
+    container_name: prometheus-container
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+      - bot
+      - cadvisor
+
+  grafana:
+    image: grafana/grafana-oss:12.0.1
+    container_name: grafana-container
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    container_name: cadvisor-container
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
+    devices:
+      - /dev/kmsg
 
   postgres:
     image: postgres:17.5-alpine
