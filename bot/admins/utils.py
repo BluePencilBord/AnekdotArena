@@ -1,6 +1,6 @@
 from aiogram.types import Message
 from bot.admins.kbs import back_to_admin_panel_kb, report_actions_kb
-from anecdotes.dao import AnecdoteDAO
+from bot.anecdotes.dao import AnecdoteDAO
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram.fsm.context import FSMContext
 

@@ -9,9 +9,9 @@ from bot.admins.kbs import (
     canceled_reports_kb,
 )
 from bot.admins.states import AdminStates
-from anecdotes.dao import AnecdoteDAO
-from anecdotes.schemas import AnecdoteFilter, AnecdoteUpdate
-from admins.utils import show_report
+from bot.anecdotes.dao import AnecdoteDAO
+from bot.anecdotes.schemas import AnecdoteFilter, AnecdoteUpdate
+from bot.admins.utils import show_report
 
 admin_router = Router()
 
