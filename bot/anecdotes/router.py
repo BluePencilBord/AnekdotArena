@@ -25,11 +25,13 @@ from bot.anecdotes.schemas import (
     AnecdoteModel,
 )
 from bot.payments.dao import DonationDAO
+from bot.metrics import command_response_time_seconds
 
 anecdote_router = Router()
 
 
 @anecdote_router.callback_query(F.data == "write_anecdote")
+@command_response_time_seconds.time()
 async def start_write_anecdote(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(
         text="✍️ Напишите анекдот\n\n✏️ Отправьте его в чат",
@@ -39,6 +41,7 @@ async def start_write_anecdote(callback: CallbackQuery, state: FSMContext):
 
 
 @anecdote_router.message(F.text, AnecdoteStates.waiting_for_text)
+@command_response_time_seconds.time()
 async def process_anecdote(
     message: Message,
     state: FSMContext,
@@ -77,6 +80,7 @@ async def process_anecdote(
 
 
 @anecdote_router.callback_query(F.data == "rate_anecdote")
+@command_response_time_seconds.time()
 async def rate_anecdote(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
 ):
@@ -101,6 +105,7 @@ async def rate_anecdote(
 @anecdote_router.callback_query(
     RateCallbackFactory.filter(F.action == "rate"), RateStates.waiting_for_rate
 )
+@command_response_time_seconds.time()
 async def process_rate(
     callback: CallbackQuery,
     callback_data: RateCallbackFactory,
