@@ -21,14 +21,15 @@ from bot.metrics import processed_messages_total, command_response_time_seconds
 user_router = Router()
 
 
-@user_router.message(CommandStart())
 @command_response_time_seconds.time()
+@user_router.message(CommandStart())
 async def cmd_start(message: Message, session_with_commit: AsyncSession):
     processed_messages_total.inc()
     text, kb = await get_start_text(message, session_with_commit)
     return await message.answer(text, reply_markup=kb)
 
 
+@command_response_time_seconds.time()
 @user_router.callback_query(F.data == "start")
 async def back_to_start(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
@@ -38,8 +39,8 @@ async def back_to_start(
     await callback.message.edit_text(text, reply_markup=kb)
 
 
-@user_router.callback_query(F.data == "my_anecdotes")
 @command_response_time_seconds.time()
+@user_router.callback_query(F.data == "my_anecdotes")
 async def my_anecdotes(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
 ):
@@ -73,11 +74,11 @@ async def my_anecdotes(
     )
 
 
+@command_response_time_seconds.time()
 @user_router.callback_query(
     PaginationCallbackFactory.filter(F.action == "select_page"),
     UserStates.watching_my_anecdotes,
 )
-@command_response_time_seconds.time()
 async def process_next_my_anecdotes(
     callback: CallbackQuery, callback_data: PaginationCallbackFactory, state: FSMContext
 ):
