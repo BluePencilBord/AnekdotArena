@@ -39,6 +39,7 @@ async def back_to_start(
 
 
 @user_router.callback_query(F.data == "my_anecdotes")
+@command_response_time_seconds.time()
 async def my_anecdotes(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
 ):
@@ -76,6 +77,7 @@ async def my_anecdotes(
     PaginationCallbackFactory.filter(F.action == "select_page"),
     UserStates.watching_my_anecdotes,
 )
+@command_response_time_seconds.time()
 async def process_next_my_anecdotes(
     callback: CallbackQuery, callback_data: PaginationCallbackFactory, state: FSMContext
 ):
