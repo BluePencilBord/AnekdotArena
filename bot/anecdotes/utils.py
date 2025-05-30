@@ -1,8 +1,8 @@
 from aiogram.fsm.context import FSMContext
 from sqlalchemy.ext.asyncio import AsyncSession
 from bot.anecdotes.dao import AnecdoteDAO
-from anecdotes.states import RateStates
-from anecdotes.kbs import rate_anecdote_kb, back_to_start_kb
+from bot.anecdotes.states import RateStates
+from bot.anecdotes.kbs import rate_anecdote_kb, back_to_start_kb
 
 
 async def send_next_anecdote(
