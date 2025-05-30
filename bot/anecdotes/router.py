@@ -61,7 +61,7 @@ async def process_anecdote(
         await AnecdoteDAO.add(session=session_with_commit, values=values)
         await state.clear()
         text, kb = await get_start_text(message, session_without_commit)
-        await message.answer("✅ Ваш анекдот успешно сохранен!")
+        await message.answer("✅ Анекдот успешно сохранен!")
         await message.answer(text, reply_markup=kb)
     except ValidationError as e:
         error_str = str(e)
