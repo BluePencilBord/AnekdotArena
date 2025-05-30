@@ -1,26 +1,30 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, LabeledPrice, Message, PreCheckoutQuery
 from aiogram.fsm.context import FSMContext
-from anecdotes.states import RateStates
-from payments.kbs import send_gift_kb, write_gift_text_kb, SendGiftCallbackFactory
+from bot.anecdotes.states import RateStates
+from bot.payments.kbs import send_gift_kb, write_gift_text_kb, SendGiftCallbackFactory
 from sqlalchemy.ext.asyncio import AsyncSession
-from anecdotes.kbs import rate_anecdote_kb, pagination_anecdotes_kb, back_to_start_kb
+from bot.anecdotes.kbs import (
+    rate_anecdote_kb,
+    pagination_anecdotes_kb,
+    back_to_start_kb,
+)
 from aiogram.methods import SendGift
-from users.dao import UserDAO
-from users.schemas import UserIDModel, TelegramIDModel
-from config_reader import bot
-from payments.schemas import (
+from bot.users.dao import UserDAO
+from bot.users.schemas import UserIDModel, TelegramIDModel
+from bot.config_reader import bot
+from bot.payments.schemas import (
     GiftTextModel,
     GiftModel,
     DonationAmountModel,
     DonationModel,
 )
 from pydantic import ValidationError
-from payments.dao import GiftDAO, DonationDAO
+from bot.payments.dao import GiftDAO, DonationDAO
 from aiogram.filters.command import Command
-from users.kbs import contact_us_kb
-from users.utils import get_start_text
-from users.states import UserStates
+from bot.users.kbs import contact_us_kb
+from bot.users.utils import get_start_text
+from bot.users.states import UserStates
 
 payments_router = Router()
 

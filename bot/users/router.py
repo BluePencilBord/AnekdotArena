@@ -2,19 +2,19 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
-from users.utils import get_start_text
+from bot.users.utils import get_start_text
 from aiogram.fsm.context import FSMContext
-from anecdotes.dao import AnecdoteDAO
-from users.schemas import TelegramIDModel
-from users.dao import UserDAO
-from users.states import UserStates
-from anecdotes.kbs import (
+from bot.anecdotes.dao import AnecdoteDAO
+from bot.users.schemas import TelegramIDModel
+from bot.users.dao import UserDAO
+from bot.users.states import UserStates
+from bot.anecdotes.kbs import (
     PaginationCallbackFactory,
     back_to_start_kb,
     pagination_anecdotes_kb,
 )
-from anecdotes.schemas import AnecdoteUserIdFilter
-from config_reader import config
+from bot.anecdotes.schemas import AnecdoteUserIdFilter
+from bot.config_reader import config
 from aiogram.filters.command import Command
 from bot.metrics import processed_messages_total, command_response_time_seconds
 

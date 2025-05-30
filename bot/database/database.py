@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy import Integer, func
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
-from config_reader import config
+from bot.config_reader import config
 
 
 DATABASE_URL = config.database_url

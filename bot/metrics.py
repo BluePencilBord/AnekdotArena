@@ -1,10 +1,4 @@
-import logging
 from prometheus_client import Counter, Histogram, start_http_server
-
-# Настроим логирование, если оно еще не настроено в main.py
-# logging.basicConfig(level=logging.INFO) # Возможно, это уже есть в main.py
-
-logger = logging.getLogger(__name__)
 
 processed_messages_total = Counter(
     "processed_messages_total", "Total number of processed messages"
@@ -34,11 +28,4 @@ command_response_time_seconds = Histogram(
 
 
 def start_metrics_server(port: int = 8000):
-    """
-    Starts a simple HTTP server to expose Prometheus metrics.
-    """
-    try:
-        start_http_server(port)
-        logger.info(f"Prometheus metrics server started successfully on port {port}")
-    except Exception as e:
-        logger.error(f"Failed to start Prometheus metrics server on port {port}: {e}")
+    start_http_server(port)

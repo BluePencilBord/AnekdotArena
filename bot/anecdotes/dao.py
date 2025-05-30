@@ -1,4 +1,4 @@
-from database.dao.base import BaseDAO
+from bot.database.dao.base import BaseDAO
 from anecdotes.models import Anecdote, Rate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import func, select, desc
