@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from aiogram.types import BotCommand, BotCommandScopeDefault
-from config_reader import bot, dp
+from bot.config_reader import bot, dp
 from users.router import user_router
 from anecdotes.router import anecdote_router
 from payments.router import payments_router
