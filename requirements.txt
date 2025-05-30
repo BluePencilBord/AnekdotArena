@@ -5,5 +5,3 @@ asyncpg==0.30.0
 alembic==1.14.1
 loguru==0.7.3
 redis==5.2.1
-pytest==8.3.5
-pytest-asyncio==1.0.0
