@@ -1,12 +1,11 @@
+from unittest.mock import AsyncMock
+import pytest
 import os
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'bot', '.env'))
-
-from bot.config_reader import config
-import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
-from pathlib import Path
+load_dotenv(
+    dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "bot", ".env")
+)
 
 
 @pytest.fixture
@@ -17,6 +16,7 @@ def fake_callback():
     callback.message = AsyncMock()
     return callback
 
+
 @pytest.fixture
 def fake_message():
     msg = AsyncMock()
@@ -24,16 +24,20 @@ def fake_message():
     msg.text = "Смешной анекдот"
     return msg
 
+
 @pytest.fixture
 def fake_state():
     state = AsyncMock()
-    state.get_data = AsyncMock(return_value={
-        "anecdote_id": 1,
-        "user_id": 123,
-        "rated_anecdote_ids": [],
-        "anecdote_report_count": 0
-    })
+    state.get_data = AsyncMock(
+        return_value={
+            "anecdote_id": 1,
+            "user_id": 123,
+            "rated_anecdote_ids": [],
+            "anecdote_report_count": 0,
+        }
+    )
     return state
+
 
 @pytest.fixture
 def fake_session():
