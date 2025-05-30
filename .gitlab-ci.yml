@@ -1,5 +1,6 @@
 stages:
   - lint
+  - test
   - build
   - deploy
 
@@ -13,6 +14,11 @@ stages:
   before_script:
     - cd $CI_PROJECT_DIR
     - ruff --version
+
+test:
+  stage: test
+  script:
+    - pytest
 
 Ruff Check:
   extends: .base_ruff
