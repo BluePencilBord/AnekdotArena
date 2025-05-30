@@ -16,12 +16,15 @@ from anecdotes.kbs import (
 from anecdotes.schemas import AnecdoteUserIdFilter
 from config_reader import config
 from aiogram.filters.command import Command
+from bot.metrics import processed_messages_total, command_response_time_seconds
 
 user_router = Router()
 
 
 @user_router.message(CommandStart())
+@command_response_time_seconds.time()
 async def cmd_start(message: Message, session_with_commit: AsyncSession):
+    processed_messages_total.inc()
     text, kb = await get_start_text(message, session_with_commit)
     return await message.answer(text, reply_markup=kb)
 
