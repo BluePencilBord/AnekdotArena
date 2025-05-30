@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
       - redis
-    command: sh -c "python bot/main"
+    command: sh -c "python -m bot/main"
 
   prometheus:
     image: prom/prometheus:v3.4.0
