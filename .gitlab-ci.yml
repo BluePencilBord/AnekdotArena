@@ -29,7 +29,7 @@ test:
 Ruff Check:
   extends: .base_ruff
   script:
-    - ruff check --output-format=gitlab > code-quality-report.json
+    - ruff check --config "lint.select=['E', 'F', 'S']" --ignore E501 --output-format=gitlab > code-quality-report.json
   artifacts:
     reports:
       codequality: $CI_PROJECT_DIR/code-quality-report.json
@@ -66,6 +66,7 @@ deploy_to_stage:
     - ssh-keyscan -H stage >> ~/.ssh/known_hosts
   script:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
+    - scp "docker/production/prometheus/prometheus.yml" "kirillbad@stage:~/prometheus/"
     - ssh kirillbad@stage 'bash -c "docker compose up -d"'
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'

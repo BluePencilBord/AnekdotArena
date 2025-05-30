@@ -1,13 +1,14 @@
 import asyncio
 import logging
 from aiogram.types import BotCommand, BotCommandScopeDefault
-from config_reader import bot, dp
-from users.router import user_router
-from anecdotes.router import anecdote_router
-from payments.router import payments_router
-from admins.router import admin_router
-from database.models import *  # noqa
-from database.dao.databae_middleware import (
+from bot.config_reader import bot, dp
+from bot.users.router import user_router
+from bot.anecdotes.router import anecdote_router
+from bot.payments.router import payments_router
+from bot.admins.router import admin_router
+from bot.metrics import start_metrics_server
+from bot.database.models import *  # noqa
+from bot.database.dao.databae_middleware import (
     DatabaseMiddlewareWithoutCommit,
     DatabaseMiddlewareWithCommit,
 )
@@ -32,6 +33,8 @@ async def main():
     dp.include_router(anecdote_router)
     dp.include_router(payments_router)
     dp.include_router(admin_router)
+
+    start_metrics_server(port=8000)
 
     await dp.start_polling(bot)
 
