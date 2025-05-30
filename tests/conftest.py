@@ -1,5 +1,13 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'bot', '.env'))
+
+from bot.config_reader import config
 import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
+from pathlib import Path
+
 
 @pytest.fixture
 def fake_callback():

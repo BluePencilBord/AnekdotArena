@@ -3,13 +3,13 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 from bot.anecdotes.utils import send_next_anecdote
 from sqlalchemy.ext.asyncio import AsyncSession
-from anecdotes.dao import AnecdoteDAO, RateDAO
+from bot.anecdotes.dao import AnecdoteDAO, RateDAO
 from pydantic import ValidationError
-from users.dao import UserDAO
-from users.utils import get_start_text
-from users.schemas import TelegramIDModel
-from anecdotes.states import AnecdoteStates, RateStates
-from anecdotes.kbs import (
+from bot.users.dao import UserDAO
+from bot.users.utils import get_start_text
+from bot.users.schemas import TelegramIDModel
+from bot.anecdotes.states import AnecdoteStates, RateStates
+from bot.anecdotes.kbs import (
     RateCallbackFactory,
     rated_anecdote_kb,
     back_to_start_kb,
@@ -17,14 +17,14 @@ from anecdotes.kbs import (
     PaginationCallbackFactory,
     reported_anecdote_kb,
 )
-from anecdotes.schemas import (
+from bot.anecdotes.schemas import (
     RateModel,
     RateModelUserId,
     AnecdoteFilter,
     AnecdoteUpdate,
     AnecdoteModel,
 )
-from payments.dao import DonationDAO
+from bot.payments.dao import DonationDAO
 
 anecdote_router = Router()
 

@@ -17,6 +17,10 @@ stages:
 
 test:
   stage: test
+  tags:
+    - python
+  image:
+    name: python:3.13.2-slim
   script:
     - pytest
 

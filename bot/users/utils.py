@@ -1,11 +1,11 @@
-from users.dao import UserDAO
-from users.kbs import main_user_kb
-from users.schemas import TelegramIDModel, UserModel
-from anecdotes.dao import RateDAO
-from anecdotes.schemas import RateModelUserId
+from bot.users.dao import UserDAO
+from bot.users.kbs import main_user_kb
+from bot.users.schemas import TelegramIDModel, UserModel
+from bot.anecdotes.dao import RateDAO
+from bot.anecdotes.schemas import RateModelUserId
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
-from payments.dao import DonationDAO
+from bot.payments.dao import DonationDAO
 
 
 async def get_start_text(message: Message, session: AsyncSession) -> tuple[str, dict]:
