@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def set_commands():
+    assert isinstance(1, int)
     commands = [
         BotCommand(command="start", description="Старт"),
         BotCommand(command="contact_us", description="Обратная связь"),
