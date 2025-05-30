@@ -1,6 +1,6 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.database import Base
+from bot.database.database import Base
 
 
 class Anecdote(Base):
