@@ -1,5 +1,6 @@
 stages:
   - lint
+  - test
   - build
   - deploy
 
@@ -13,6 +14,17 @@ stages:
   before_script:
     - cd $CI_PROJECT_DIR
     - ruff --version
+
+test:
+  stage: test
+  tags:
+    - python
+  image:
+    name: python:3.13.2-slim
+  script:
+    - pip install pytest==8.3.5 pytest-asyncio==1.0.0 dotenv==0.9.9
+    - pip install -r requirements.txt
+    - pytest
 
 Ruff Check:
   extends: .base_ruff
