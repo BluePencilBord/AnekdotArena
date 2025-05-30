@@ -1,14 +1,14 @@
 import asyncio
 import logging
 from aiogram.types import BotCommand, BotCommandScopeDefault
-from config_reader import bot, dp
-from users.router import user_router
-from anecdotes.router import anecdote_router
-from payments.router import payments_router
-from admins.router import admin_router
-from metrics import start_metrics_server
-from database.models import *  # noqa
-from database.dao.databae_middleware import (
+from bot.config_reader import bot, dp
+from bot.users.router import user_router
+from bot.anecdotes.router import anecdote_router
+from bot.payments.router import payments_router
+from bot.admins.router import admin_router
+from bot.metrics import start_metrics_server
+from bot.database.models import *  # noqa
+from bot.database.dao.databae_middleware import (
     DatabaseMiddlewareWithoutCommit,
     DatabaseMiddlewareWithCommit,
 )
