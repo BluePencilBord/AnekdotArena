@@ -3,9 +3,30 @@ import pytest
 import os
 from dotenv import load_dotenv
 
-load_dotenv(
-    dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "bot", ".env")
-)
+env_content = """\
+BOT_TOKEN=1234567890:qwertyuiopasdfghjklzxcvbnmqwertyuio
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=testDB
+POSTGRES_PORT=1234
+POSTGRES_HOST=host
+ADMIN_IDS=[123456789]
+REDIS_HOST=user
+REDIS_PORT=1234
+"""
+
+temp_env_path = os.path.join(os.path.dirname(__file__), ".env.test")
+with open(temp_env_path, "w") as f:
+    f.write(env_content)
+
+load_dotenv(dotenv_path=temp_env_path, override=True)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_env():
+    yield
+    if os.path.exists(temp_env_path):
+        os.remove(temp_env_path)
 
 
 @pytest.fixture

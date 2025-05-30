@@ -22,7 +22,7 @@ test:
   image:
     name: python:3.13.2-slim
   script:
-    - pip install pytest==8.3.5 pytest-asyncio==1.0.0 dotenv
+    - pip install pytest==8.3.5 pytest-asyncio==1.0.0 dotenv==0.9.9
     - pytest
 
 Ruff Check:
