@@ -1,6 +1,6 @@
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.database import Base
+from bot.database.database import Base
 
 
 class User(Base):
@@ -9,10 +9,10 @@ class User(Base):
     first_name: Mapped[str | None]
     last_name: Mapped[str | None]
 
-    anecdotes: Mapped[list["Anecdote"]] = relationship(
+    anecdotes: Mapped[list["Anecdote"]] = relationship(  # noqa
         "Anecdote", back_populates="user", cascade="all, delete-orphan"
     )
-    rates: Mapped[list["Rate"]] = relationship(
+    rates: Mapped[list["Rate"]] = relationship(  # noqa
         "Rate", back_populates="user", cascade="all, delete-orphan"
     )
 

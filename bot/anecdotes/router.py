@@ -1,15 +1,15 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
-from anecdotes.utils import send_next_anecdote
+from bot.anecdotes.utils import send_next_anecdote
 from sqlalchemy.ext.asyncio import AsyncSession
-from anecdotes.dao import AnecdoteDAO, RateDAO
+from bot.anecdotes.dao import AnecdoteDAO, RateDAO
 from pydantic import ValidationError
-from users.dao import UserDAO
-from users.utils import get_start_text
-from users.schemas import TelegramIDModel
-from anecdotes.states import AnecdoteStates, RateStates
-from anecdotes.kbs import (
+from bot.users.dao import UserDAO
+from bot.users.utils import get_start_text
+from bot.users.schemas import TelegramIDModel
+from bot.anecdotes.states import AnecdoteStates, RateStates
+from bot.anecdotes.kbs import (
     RateCallbackFactory,
     rated_anecdote_kb,
     back_to_start_kb,
@@ -17,12 +17,20 @@ from anecdotes.kbs import (
     PaginationCallbackFactory,
     reported_anecdote_kb,
 )
-from anecdotes.schemas import RateModel, RateModelUserId, AnecdoteFilter, AnecdoteUpdate, AnecdoteModel
-from payments.dao import DonationDAO
+from bot.anecdotes.schemas import (
+    RateModel,
+    RateModelUserId,
+    AnecdoteFilter,
+    AnecdoteUpdate,
+    AnecdoteModel,
+)
+from bot.payments.dao import DonationDAO
+from bot.metrics import command_response_time_seconds
 
 anecdote_router = Router()
 
 
+@command_response_time_seconds.time()
 @anecdote_router.callback_query(F.data == "write_anecdote")
 async def start_write_anecdote(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(
@@ -32,6 +40,7 @@ async def start_write_anecdote(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AnecdoteStates.waiting_for_text)
 
 
+@command_response_time_seconds.time()
 @anecdote_router.message(F.text, AnecdoteStates.waiting_for_text)
 async def process_anecdote(
     message: Message,
@@ -70,6 +79,7 @@ async def process_anecdote(
         )
 
 
+@command_response_time_seconds.time()
 @anecdote_router.callback_query(F.data == "rate_anecdote")
 async def rate_anecdote(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
@@ -92,6 +102,7 @@ async def rate_anecdote(
     )
 
 
+@command_response_time_seconds.time()
 @anecdote_router.callback_query(
     RateCallbackFactory.filter(F.action == "rate"), RateStates.waiting_for_rate
 )
@@ -102,7 +113,6 @@ async def process_rate(
     session_with_commit: AsyncSession,
     session_without_commit: AsyncSession,
 ):
-
     data = await state.get_data()
     anecdote_id = data.get("anecdote_id")
     user_id = data.get("user_id")

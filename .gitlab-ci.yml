@@ -1,29 +1,61 @@
 stages:
+  - lint
+  - test
   - build
   - deploy
 
+.base_ruff:
+  stage: lint
+  tags:
+    - python
+  interruptible: true
+  image:
+    name: ghcr.io/astral-sh/ruff:0.11.12-alpine
+  before_script:
+    - cd $CI_PROJECT_DIR
+    - ruff --version
+
+test:
+  stage: test
+  tags:
+    - python
+  image:
+    name: python:3.13.2-slim
+  script:
+    - pip install pytest==8.3.5 pytest-asyncio==1.0.0 dotenv==0.9.9
+    - pip install -r requirements.txt
+    - pytest
+
+Ruff Check:
+  extends: .base_ruff
+  script:
+    - ruff check --config "lint.select=['E', 'F', 'S']" --ignore E501 --output-format=gitlab > code-quality-report.json
+  artifacts:
+    reports:
+      codequality: $CI_PROJECT_DIR/code-quality-report.json
+
+Ruff Format:
+  extends: .base_ruff
+  script:
+    - ruff format --diff
+
 build_bot_image:
   stage: build
-
   tags:
     - docker
-    - python
-
   image: docker:latest
-
   before_script:
     - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-
   script:
     - docker build -f docker/production/dockerfile -t kirillbad/anekdotarena:latest .
-
     - docker push kirillbad/anekdotarena:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\// || $CI_COMMIT_BRANCH == "develop"'
 
 deploy_to_stage:
   stage: deploy
   tags:
     - docker
-    - python
   image: tailscale/tailscale:stable
   before_script:
     - apk add --no-cache openssh-client
@@ -34,4 +66,7 @@ deploy_to_stage:
     - ssh-keyscan -H stage >> ~/.ssh/known_hosts
   script:
     - scp "docker/production/docker-compose.yml" "kirillbad@stage:~/"
+    - scp "docker/production/prometheus/prometheus.yml" "kirillbad@stage:~/prometheus/"
     - ssh kirillbad@stage 'bash -c "docker compose up -d"'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'

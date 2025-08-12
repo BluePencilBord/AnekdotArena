@@ -2,26 +2,34 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
-from users.utils import get_start_text
+from bot.users.utils import get_start_text
 from aiogram.fsm.context import FSMContext
-from anecdotes.dao import AnecdoteDAO
-from users.schemas import TelegramIDModel
-from users.dao import UserDAO
-from users.states import UserStates
-from anecdotes.kbs import PaginationCallbackFactory, back_to_start_kb, pagination_anecdotes_kb
-from anecdotes.schemas import AnecdoteUserIdFilter
-from config_reader import config
+from bot.anecdotes.dao import AnecdoteDAO
+from bot.users.schemas import TelegramIDModel
+from bot.users.dao import UserDAO
+from bot.users.states import UserStates
+from bot.anecdotes.kbs import (
+    PaginationCallbackFactory,
+    back_to_start_kb,
+    pagination_anecdotes_kb,
+)
+from bot.anecdotes.schemas import AnecdoteUserIdFilter
+from bot.config_reader import config
 from aiogram.filters.command import Command
+from bot.metrics import processed_messages_total, command_response_time_seconds
 
 user_router = Router()
 
 
+@command_response_time_seconds.time()
 @user_router.message(CommandStart())
 async def cmd_start(message: Message, session_with_commit: AsyncSession):
+    processed_messages_total.inc()
     text, kb = await get_start_text(message, session_with_commit)
     return await message.answer(text, reply_markup=kb)
 
 
+@command_response_time_seconds.time()
 @user_router.callback_query(F.data == "start")
 async def back_to_start(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
@@ -31,6 +39,7 @@ async def back_to_start(
     await callback.message.edit_text(text, reply_markup=kb)
 
 
+@command_response_time_seconds.time()
 @user_router.callback_query(F.data == "my_anecdotes")
 async def my_anecdotes(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
@@ -65,6 +74,7 @@ async def my_anecdotes(
     )
 
 
+@command_response_time_seconds.time()
 @user_router.callback_query(
     PaginationCallbackFactory.filter(F.action == "select_page"),
     UserStates.watching_my_anecdotes,

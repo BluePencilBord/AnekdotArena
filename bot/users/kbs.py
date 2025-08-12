@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from config_reader import config
+from bot.config_reader import config
 
 
 def main_user_kb(user_id: int) -> InlineKeyboardMarkup:

@@ -2,16 +2,16 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram.fsm.context import FSMContext
-from admins.kbs import (
+from bot.admins.kbs import (
     admin_panel_kb,
     back_to_admin_panel_kb,
     deleted_anecdote_kb,
     canceled_reports_kb,
 )
-from admins.states import AdminStates
-from anecdotes.dao import AnecdoteDAO
-from anecdotes.schemas import AnecdoteFilter, AnecdoteUpdate
-from admins.utils import show_report
+from bot.admins.states import AdminStates
+from bot.anecdotes.dao import AnecdoteDAO
+from bot.anecdotes.schemas import AnecdoteFilter, AnecdoteUpdate
+from bot.admins.utils import show_report
 
 admin_router = Router()
 
@@ -24,7 +24,7 @@ async def show_admin_panel(callback: CallbackQuery):
 
 
 @admin_router.callback_query(F.data == "show_reports")
-async def show_admin_panel(
+async def show_admin_reports(
     callback: CallbackQuery, state: FSMContext, session_without_commit: AsyncSession
 ):
     await callback.answer()

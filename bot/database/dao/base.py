@@ -118,10 +118,10 @@ class BaseDAO:
             if obj:
                 await session.delete(obj)
                 await session.flush()
-                logger.info(f"Запись успешно удалена")
+                logger.info("Запись успешно удалена")
                 return 1
             else:
-                logger.warning(f"Запись для удаления не найдена")
+                logger.warning("Запись для удаления не найдена")
                 return 0
 
         except SQLAlchemyError as e:

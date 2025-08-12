@@ -13,25 +13,25 @@ class SendGiftCallbackFactory(CallbackData, prefix="send"):
 def send_gift_kb():
     builder = InlineKeyboardBuilder()
     builder.button(
-        text=f"🧸 за 25 ⭐️",
+        text="🧸 за 25 ⭐️",
         callback_data=SendGiftCallbackFactory(
             action="gift", value=25, gift_emoji="🧸", gift_id="5170233102089322756"
         ),
     )
     builder.button(
-        text=f"🎁 за 35 ⭐️",
+        text="🎁 за 35 ⭐️",
         callback_data=SendGiftCallbackFactory(
             action="gift", value=35, gift_emoji="🎁", gift_id="5168103777563050263"
         ),
     )
     builder.button(
-        text=f"🍾 за 60 ⭐️",
+        text="🍾 за 60 ⭐️",
         callback_data=SendGiftCallbackFactory(
             action="gift", value=60, gift_emoji="🍾", gift_id="6028601630662853006"
         ),
     )
     builder.button(
-        text=f"🏆 за 110 ⭐️",
+        text="🏆 за 110 ⭐️",
         callback_data=SendGiftCallbackFactory(
             action="gift", value=110, gift_emoji="🏆", gift_id="5168043875654172773"
         ),

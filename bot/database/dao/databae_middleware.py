@@ -1,7 +1,7 @@
 from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
-from database.database import async_session_maker
+from bot.database.database import async_session_maker
 
 
 class BaseDatabaseMiddleware(BaseMiddleware):
@@ -15,9 +15,7 @@ class BaseDatabaseMiddleware(BaseMiddleware):
             self.set_session(data, session)
             try:
                 result = await handler(event, data)
-                await self.after_handler(
-                    session
-                )
+                await self.after_handler(session)
                 return result
             except Exception as e:
                 await session.rollback()

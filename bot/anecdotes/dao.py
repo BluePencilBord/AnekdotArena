@@ -1,5 +1,5 @@
-from database.dao.base import BaseDAO
-from anecdotes.models import Anecdote, Rate
+from bot.database.dao.base import BaseDAO
+from bot.anecdotes.models import Anecdote, Rate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import func, select, desc
 from sqlalchemy.exc import SQLAlchemyError
@@ -28,9 +28,9 @@ class AnecdoteDAO(BaseDAO):
             record = result.scalar_one_or_none()
 
             if record:
-                logger.info(f"Случайная запись найдена")
+                logger.info("Случайная запись найдена")
             else:
-                logger.info(f"Записи не найдены")
+                logger.info("Записи не найдены")
             return record
         except SQLAlchemyError as e:
             logger.error(f"Ошибка при поиске случайной записи: {e}")
@@ -70,7 +70,7 @@ class RateDAO(BaseDAO):
 
     @classmethod
     async def get_top_anecdotes(cls, session: AsyncSession):
-        logger.info(f"Получение топ анекдотов")
+        logger.info("Получение топ анекдотов")
         try:
             query = (
                 select(

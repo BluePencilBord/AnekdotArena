@@ -1,7 +1,5 @@
-from database.dao.base import BaseDAO
-from payments.models import Gift, Donation
-from database.dao.base import BaseDAO
-from payments.models import Donation
+from bot.database.dao.base import BaseDAO
+from bot.payments.models import Gift, Donation
 from sqlalchemy import func
 from sqlalchemy.future import select
 from sqlalchemy.exc import SQLAlchemyError
